@@ -3,7 +3,24 @@
         "installed": [],
         "uninstalled": []
     },
-    "config_munge": {},
-    "installed_plugins": {},
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "plugins": [
+                        {
+                            "xml": "<plugin name=\"FastCanvas\" value=\"com.adobe.plugins.FastCanvas\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "com.adobe.plugins.FastCanvas": {
+            "PACKAGE_NAME": "com.jdrago.blackout"
+        }
+    },
     "dependent_plugins": {}
 }
