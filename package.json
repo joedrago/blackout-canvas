@@ -1,0 +1,15 @@
+{
+  "name": "blackout",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "cake build",
+    "watch": "cake watch"
+  },
+  "dependencies": {
+    "browserify":"*",
+    "growl": "*",
+    "node-watch": "*",
+    "coffeeify": "*"
+  }
+}
