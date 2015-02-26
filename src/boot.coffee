@@ -33,15 +33,18 @@ eventToMousePos = (event, elem) ->
 class App
   constructor: ->
     @isPhone = !!window.cordova
-    @isTouchSupported = "ontouchstart" in window
+    console.log JSON.stringify(Object.keys(window))
+    @isTouchSupported = (window.ontouchstart != undefined)
     @dragging = false
     @pendingImages = 0
     if @isTouchSupported
+      console.log "using touch events"
       @eventNames =
         down: 'touchstart'
         move: 'touchmove'
         up:   'touchend'
     else
+      console.log "using mouse events"
       @eventNames =
         down: 'mousedown'
         move: 'mousemove'

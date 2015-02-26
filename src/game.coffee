@@ -13,6 +13,6 @@ class Game
 
   mouseDown: (@x, @y) ->
   mouseMove: (@x, @y) ->
-  mouseUp: (@x, @y) ->
+  mouseUp: (x, y) ->
 
 module.exports = Game
