@@ -3,6 +3,8 @@ function eventToMousePos(event, elem) {
         elem = document.body;
     }
 
+    console.log("ELEMENT SIZE: ", elem);
+
     var isTouch = false;
     var pos = {
         x: 0,
@@ -13,8 +15,8 @@ function eventToMousePos(event, elem) {
     if (event.touches){
         if (event.touches.length){
             isTouch = true;
-            pos.x = parseInt(event.touches[0].pageX);
-            pos.y = parseInt(event.touches[0].pageY);
+            pos.x = parseInt(event.touches[0].clientX);
+            pos.y = parseInt(event.touches[0].clientY);
         }
     }else{
         // mouse events
@@ -51,13 +53,14 @@ function eventToMousePos(event, elem) {
 
 function debug() {
     console.log("DEBUG FUNCTION");
+    console.log("window size " + window.innerWidth + ", " + window.innerHeight + "," + window.devicePixelRatio);
 
     var canvas = FastCanvas.create(); // specific to FastCanvas
     var context = canvas.getContext("2d");
     var myImage = FastCanvas.createImage(); // specific to FastCanvas
     myImage.onload = function(){
            context.setTransform(1, 0, 0, 1, 0, 0);
-           context.translate(200, 200);
+           context.translate(660, 340);
            context.rotate(Math.PI);
            context.drawImage(myImage, 0, 0);
            FastCanvas.render(); // specific to FastCanvas

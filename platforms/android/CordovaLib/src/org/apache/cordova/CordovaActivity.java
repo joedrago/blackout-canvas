@@ -62,7 +62,7 @@ import android.widget.LinearLayout;
  * html file that contains the application.
  *
  * As an example:
- * 
+ *
  * <pre>
  *     package org.apache.cordova.examples;
  *
@@ -79,8 +79,8 @@ import android.widget.LinearLayout;
  *       }
  *     }
  * </pre>
- * 
- * Cordova xml configuration: Cordova uses a configuration file at 
+ *
+ * Cordova xml configuration: Cordova uses a configuration file at
  * res/xml/config.xml to specify its settings. See "The config.xml File"
  * guide in cordova-docs at http://cordova.apache.org/docs for the documentation
  * for the configuration. The use of the set*Property() methods is
@@ -209,19 +209,19 @@ public class CordovaActivity extends Activity implements CordovaInterface {
         {
             getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
-        
-        if(preferences.getBoolean("SetFullscreen", false))
-        {
-            Log.d(TAG, "The SetFullscreen configuration is deprecated in favor of Fullscreen, and will be removed in a future version.");
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else if (preferences.getBoolean("Fullscreen", false)) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        }
+
+        // if(preferences.getBoolean("SetFullscreen", false))
+        // {
+        //     Log.d(TAG, "The SetFullscreen configuration is deprecated in favor of Fullscreen, and will be removed in a future version.");
+        //     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        //             WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // } else if (preferences.getBoolean("Fullscreen", false)) {
+        //     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        //             WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // } else {
+        //     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+        //             WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        // }
 
         super.onCreate(savedInstanceState);
 
@@ -229,6 +229,15 @@ public class CordovaActivity extends Activity implements CordovaInterface {
         {
             initCallbackClass = savedInstanceState.getString("callbackClass");
         }
+
+        this.getWindow().getDecorView().setSystemUiVisibility(
+                      View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.INVISIBLE);
     }
 
     @SuppressWarnings("deprecation")
@@ -268,7 +277,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
 
         // Add web view but make it invisible while loading URL
         appView.setVisibility(View.INVISIBLE);
-        
+
         // need to remove appView from any existing parent before invoking root.addView(appView)
         ViewParent parent = appView.getParent();
         if ((parent != null) && (parent != root)) {
@@ -368,7 +377,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
                 this.showSplashScreen(this.splashscreenTime);
             }
         }
-        
+
         // If keepRunning
         this.keepRunning = preferences.getBoolean("KeepRunning", true);
 
@@ -379,7 +388,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
             this.loadSpinner();
         }
         //Load the correct splashscreen
-        
+
         if(this.splashscreen != 0)
         {
             this.appView.loadUrl(url, this.splashscreenTime);
@@ -402,7 +411,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
         this.splashscreenTime = time;
         this.loadUrl(url);
     }
-    
+
     /*
      * Load the spinner
      */
@@ -608,7 +617,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
     protected void onResume() {
         super.onResume();
         LOG.d(TAG, "Resuming the App");
-        
+
         if (this.activityState == ACTIVITY_STARTING) {
             this.activityState = ACTIVITY_RUNNING;
             return;
@@ -649,7 +658,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
             appView.handleDestroy();
         }
         else {
-            this.activityState = ACTIVITY_EXITING; 
+            this.activityState = ACTIVITY_EXITING;
         }
     }
 
@@ -945,7 +954,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
                 root.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
                 root.setBackgroundResource(that.splashscreen);
-                
+
                 // Create and show the dialog
                 splashDialog = new Dialog(that, android.R.style.Theme_Translucent_NoTitleBar);
                 // check to see if the splash screen should be full screen
@@ -980,14 +989,14 @@ public class CordovaActivity extends Activity implements CordovaInterface {
             return super.onKeyUp(keyCode, event);
     	}
     }
-    
+
     /*
      * Android 2.x needs to be able to check where the cursor is.  Android 4.x does not
-     * 
+     *
      * (non-Javadoc)
      * @see android.app.Activity#onKeyDown(int, android.view.KeyEvent)
      */
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -998,8 +1007,8 @@ public class CordovaActivity extends Activity implements CordovaInterface {
         else
             return super.onKeyDown(keyCode, event);
     }
-    
-    
+
+
     /**
      * Called when a message is sent to plugin.
      *
@@ -1050,7 +1059,7 @@ public class CordovaActivity extends Activity implements CordovaInterface {
     public ExecutorService getThreadPool() {
         return threadPool;
     }
-    
+
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);

@@ -96,26 +96,26 @@ public class CordovaWebView extends WebView {
     private CordovaPreferences preferences;
 
     class ActivityResult {
-        
+
         int request;
         int result;
         Intent incoming;
-        
+
         public ActivityResult(int req, int res, Intent intent) {
             request = req;
             result = res;
             incoming = intent;
         }
 
-        
+
     }
-    
+
     static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER =
             new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT,
             Gravity.CENTER);
-    
+
     public CordovaWebView(Context context) {
         this(context, null);
     }
@@ -164,7 +164,7 @@ public class CordovaWebView extends WebView {
     private void initIfNecessary() {
         if (pluginManager == null) {
             Log.w(TAG, "CordovaWebView.init() was not called. This will soon be required.");
-            // Before the refactor to a two-phase init, the Context needed to implement CordovaInterface. 
+            // Before the refactor to a two-phase init, the Context needed to implement CordovaInterface.
             CordovaInterface cdv = (CordovaInterface)getContext();
             if (!Config.isInitialized()) {
                 Config.init(cdv.getActivity());
@@ -176,7 +176,7 @@ public class CordovaWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     @SuppressWarnings("deprecation")
     private void initWebViewSettings() {
-        this.setInitialScale(0);
+        this.setInitialScale(100);
         this.setVerticalScrollBarEnabled(false);
         // TODO: The Activity is the one that should call requestFocus().
         if (shouldRequestFocusOnInit()) {
@@ -187,11 +187,10 @@ public class CordovaWebView extends WebView {
         settings.setJavaScriptEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
-        
         // Set the nav dump for HTC 2.x devices (disabling for ICS, deprecated entirely for Jellybean 4.2)
         try {
             Method gingerbread_getMethod =  WebSettings.class.getMethod("setNavDump", new Class[] { boolean.class });
-            
+
             String manufacturer = android.os.Build.MANUFACTURER;
             Log.d(TAG, "CordovaWebView is running on device made by: " + manufacturer);
             if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB &&
@@ -212,7 +211,7 @@ public class CordovaWebView extends WebView {
         //We don't save any form data in the application
         settings.setSaveFormData(false);
         settings.setSavePassword(false);
-        
+
         // Jellybean rightfully tried to lock this down. Too bad they didn't give us a whitelist
         // while we do this
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
@@ -222,15 +221,15 @@ public class CordovaWebView extends WebView {
         String databasePath = getContext().getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         settings.setDatabaseEnabled(true);
         settings.setDatabasePath(databasePath);
-        
-        
+
+
         //Determine whether we're in debug or release mode, and turn on Debugging!
         ApplicationInfo appInfo = getContext().getApplicationContext().getApplicationInfo();
         if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             enableRemoteDebugging();
         }
-        
+
         settings.setGeolocationDatabasePath(databasePath);
 
         // Enable DOM storage
@@ -238,17 +237,17 @@ public class CordovaWebView extends WebView {
 
         // Enable built-in geolocation
         settings.setGeolocationEnabled(true);
-        
+
         // Enable AppCache
         // Fix for CB-2282
         settings.setAppCacheMaxSize(5 * 1048576);
         settings.setAppCachePath(databasePath);
         settings.setAppCacheEnabled(true);
-        
+
         // Fix for CB-1405
         // Google issue 4641
         settings.getUserAgentString();
-        
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
         if (this.receiver == null) {
@@ -287,7 +286,7 @@ public class CordovaWebView extends WebView {
 	/**
 	 * Override this method to decide whether or not you need to request the
 	 * focus when your application start
-	 * 
+	 *
 	 * @return true unless this method is overriden to return a different value
 	 */
     protected boolean shouldRequestFocusOnInit() {
@@ -300,8 +299,8 @@ public class CordovaWebView extends WebView {
             // Bug being that Java Strings do not get converted to JS strings automatically.
             // This isn't hard to work-around on the JS side, but it's easier to just
             // use the prompt bridge instead.
-            return;            
-        } 
+            return;
+        }
         this.addJavascriptInterface(new ExposedJsApi(bridge), "_cordovaNative");
     }
 
@@ -316,12 +315,12 @@ public class CordovaWebView extends WebView {
         this.chromeClient = (CordovaChromeClient)client;
         super.setWebChromeClient(client);
     }
-    
+
     public CordovaChromeClient getWebChromeClient() {
         return this.chromeClient;
     }
 
-    
+
     public Whitelist getWhitelist() {
         return this.internalWhitelist;
     }
@@ -466,13 +465,13 @@ public class CordovaWebView extends WebView {
         // Load url
         this.loadUrlIntoView(url);
     }
-    
+
     @Override
     public void stopLoading() {
         viewClient.isCurrentlyLoading = false;
         super.stopLoading();
     }
-    
+
     public void onScrollChanged(int l, int t, int oldl, int oldt)
     {
         super.onScrollChanged(l, t, oldl, oldt);
@@ -480,7 +479,7 @@ public class CordovaWebView extends WebView {
         ScrollEvent myEvent = new ScrollEvent(l, t, oldl, oldt, this);
         this.postMessage("onScrollChanged", myEvent);
     }
-    
+
     /**
      * Send JavaScript statement back to JavaScript.
      * Deprecated (https://issues.apache.org/jira/browse/CB-6851)
@@ -763,14 +762,14 @@ public class CordovaWebView extends WebView {
             this.pauseTimers();
         }
         paused = true;
-   
+
     }
-    
+
     public void handleResume(boolean keepRunning, boolean activityResultKeepRunning)
     {
 
         this.loadUrl("javascript:try{cordova.fireDocumentEvent('resume');}catch(e){console.log('exception firing resume event from native');};");
-        
+
         // Forward to plugins
         if (this.pluginManager != null) {
             this.pluginManager.onResume(keepRunning);
@@ -780,7 +779,7 @@ public class CordovaWebView extends WebView {
         this.resumeTimers();
         paused = false;
     }
-    
+
     public void handleDestroy()
     {
         // Send destroy event to JavaScript
@@ -793,7 +792,7 @@ public class CordovaWebView extends WebView {
         if (this.pluginManager != null) {
             this.pluginManager.onDestroy();
         }
-        
+
         // unregister the receiver
         if (this.receiver != null) {
             try {
@@ -803,7 +802,7 @@ public class CordovaWebView extends WebView {
             }
         }
     }
-    
+
     public void onNewIntent(Intent intent)
     {
         //Forward to plugins
@@ -811,7 +810,7 @@ public class CordovaWebView extends WebView {
             this.pluginManager.onNewIntent(intent);
         }
     }
-    
+
     public boolean isPaused()
     {
         return paused;
@@ -830,7 +829,7 @@ public class CordovaWebView extends WebView {
             settings.setAllowUniversalAccessFromFileURLs(true);
         }
     }
-    
+
     public void printBackForwardList() {
         WebBackForwardList currentList = this.copyBackForwardList();
         int currentSize = currentList.getSize();
@@ -841,8 +840,8 @@ public class CordovaWebView extends WebView {
             LOG.d(TAG, "The URL at index: " + Integer.toString(i) + " is " + url );
         }
     }
-    
-    
+
+
     //Can Go Back is BROKEN!
     public boolean startOfHistory()
     {
@@ -866,18 +865,18 @@ public class CordovaWebView extends WebView {
             callback.onCustomViewHidden();
             return;
         }
-        
+
         // Store the view and its callback for later (to kill it properly)
         mCustomView = view;
         mCustomViewCallback = callback;
-        
+
         // Add the custom view to its container.
         ViewGroup parent = (ViewGroup) this.getParent();
         parent.addView(view, COVER_SCREEN_GRAVITY_CENTER);
-        
+
         // Hide the content view.
         this.setVisibility(View.GONE);
-        
+
         // Finally show the custom view container.
         parent.setVisibility(View.VISIBLE);
         parent.bringToFront();
@@ -890,27 +889,27 @@ public class CordovaWebView extends WebView {
 
         // Hide the custom view.
         mCustomView.setVisibility(View.GONE);
-        
+
         // Remove the custom view from its container.
         ViewGroup parent = (ViewGroup) this.getParent();
         parent.removeView(mCustomView);
         mCustomView = null;
         mCustomViewCallback.onCustomViewHidden();
-        
+
         // Show the content view.
         this.setVisibility(View.VISIBLE);
     }
-    
+
     /**
-     * if the video overlay is showing then we need to know 
+     * if the video overlay is showing then we need to know
      * as it effects back button handling
-     * 
+     *
      * @return true if custom view is showing
      */
     public boolean isCustomViewShowing() {
         return mCustomView != null;
     }
-    
+
     public WebBackForwardList restoreState(Bundle savedInstanceState)
     {
         WebBackForwardList myList = super.restoreState(savedInstanceState);
@@ -923,7 +922,7 @@ public class CordovaWebView extends WebView {
     @Deprecated // This never did anything
     public void storeResult(int requestCode, int resultCode, Intent intent) {
     }
-    
+
     public CordovaResourceApi getResourceApi() {
         return resourceApi;
     }
