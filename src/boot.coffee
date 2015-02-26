@@ -35,7 +35,6 @@ class App
     @isPhone = !!window.cordova
     @isTouchSupported = "ontouchstart" in window
     @dragging = false
-    @boundRender = @render.bind(this)
     @pendingImages = 0
     if @isTouchSupported
       @eventNames =
