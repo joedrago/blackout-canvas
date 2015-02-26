@@ -55,6 +55,12 @@ function debug() {
     console.log("DEBUG FUNCTION");
     console.log("window size " + window.innerWidth + ", " + window.innerHeight + "," + window.devicePixelRatio);
 
+    var mvp = document.getElementById('gameViewport');
+    var scale = 1 / window.devicePixelRatio;
+    var viewportSettings = "user-scalable=no, initial-scale="+scale+", maximum-scale="+scale+", minimum-scale="+scale+", width=device-width, height=device-height";
+    console.log("viewportSettings: " + viewportSettings);
+    mvp.setAttribute('content', viewportSettings);
+
     var canvas = FastCanvas.create(); // specific to FastCanvas
     var context = canvas.getContext("2d");
     var myImage = FastCanvas.createImage(); // specific to FastCanvas

@@ -176,7 +176,7 @@ public class CordovaWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     @SuppressWarnings("deprecation")
     private void initWebViewSettings() {
-        this.setInitialScale(100);
+        this.setInitialScale(0);
         this.setVerticalScrollBarEnabled(false);
         // TODO: The Activity is the one that should call requestFocus().
         if (shouldRequestFocusOnInit()) {
@@ -187,6 +187,8 @@ public class CordovaWebView extends WebView {
         settings.setJavaScriptEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
         // Set the nav dump for HTC 2.x devices (disabling for ICS, deprecated entirely for Jellybean 4.2)
         try {
             Method gingerbread_getMethod =  WebSettings.class.getMethod("setNavDump", new Class[] { boolean.class });
@@ -767,7 +769,6 @@ public class CordovaWebView extends WebView {
 
     public void handleResume(boolean keepRunning, boolean activityResultKeepRunning)
     {
-
         this.loadUrl("javascript:try{cordova.fireDocumentEvent('resume');}catch(e){console.log('exception firing resume event from native');};");
 
         // Forward to plugins
