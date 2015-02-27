@@ -102,6 +102,7 @@ class App
       @game.images[imageName].onload = @onImageLoaded.bind(this)
       @game.images[imageName].src = imageUrl
     console.log "game created: #{JSON.stringify(Object.keys(@game))}"
+    console.log "FastCanvas.isFast: #{FastCanvas.isFast}"
 
   onDeviceReady: ->
     console.log 'onDeviceReady'
